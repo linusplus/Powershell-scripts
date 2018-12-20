@@ -34,6 +34,7 @@ for () {
         {
             try { [System.IO.File]::OpenWrite($SourceFile).close();$open=0 }
             catch {$open=1}
+            Start-Sleep 2
         }
         
         # The target file is supposed to have an "X" in the name.To be replaced with a "#"
