@@ -1,8 +1,7 @@
 set-executionpolicy remotesigned -Force -Scope CurrentUser
 Add-Type -AssemblyName System.Web
 
-# Data to be modified.Please notice that script must not reside in the same directory as data, that is supposed to be empty or
-# containing one file only.
+# Data to be modified.Please notice that script must not reside in the same directory as data
 $SourcePath = "C:\yourpath"
 $ftpPath = "ftp://yourftpserver/yourftpserverpath"
 $username = "username"
@@ -20,16 +19,12 @@ else
 
 
 for () {
-    if ((Get-ChildItem $SourcePath | Measure-Object | %{$_.Count}) -gt 1)  
-    {
-        write-output "The specified folder contains more than one file"
-        Exit
-    }
         
     # Get the target file name
-    $SourceFileName = Get-ChildItem $SourcePath\*.dat -Name
-    # Add its path
+    $SourceFileName =  Get-ChildItem $SourcePath\*.dat | sort LastWriteTime | select -last 1 | % { $_.Name }
+	# Add its path
     $SourceFile = "$SourcePath\$SourceFileName"
+    
 
     if ([System.IO.File]::Exists($SourceFile)) {
         # The target file is supposed to have an "X" in the name.To be replaced with a "#"
@@ -40,8 +35,8 @@ for () {
         Get-ChildItem -File | % { Rename-Item -Path $_.PSPath -NewName $_.Name.replace(".dat",".")}
 
         # Get target file name again
-        $SourceFileName = Get-ChildItem $SourcePath\* -Name
-        # Since name contain a "#" we nee to encode it as an URL, since we 're going to upload to a ftp server
+        $SourceFileName =  Get-ChildItem $SourcePath\* | sort LastWriteTime | select -last 1 | % { $_.Name }
+	    # Since name contain a "#" we nee to encode it as an URL, since we 're going to upload to a ftp server
         $SourceFileNameUrl = [System.Web.HttpUtility]::UrlEncode($SourceFileName)
         $ftpName = "$ftpPath/$SourceFileNameUrl"
         $SourceFile = "$SourcePath\$SourceFileName"
@@ -112,8 +107,8 @@ for () {
         $rs.Close()
         $rs.Dispose()
         write-output "Files uploaded correctly"
-        Remove-Item $SourceFile
-        Remove-Item $SourceFileA
+        # Clean up dir
+        Remove-Item *.*
     } else {
         write-output "File does not exist"
     }
