@@ -16,7 +16,8 @@ else
     write-output "Path does not exist"
     Exit
 }
-
+$NumberOfIterations = 0
+$NumberOfUploads = 0
 
 for () {
         
@@ -24,7 +25,7 @@ for () {
     $SourceFileName =  Get-ChildItem $SourcePath\*.dat | sort LastWriteTime | select -last 1 | % { $_.Name }
 	# Add its path
     $SourceFile = "$SourcePath\$SourceFileName"
-    
+    $NumberOfIterations++
 
     if ([System.IO.File]::Exists($SourceFile)) {
         # The target file is supposed to have an "X" in the name.To be replaced with a "#"
@@ -106,11 +107,16 @@ for () {
         # be sure to clean up after ourselves
         $rs.Close()
         $rs.Dispose()
-        write-output "Files uploaded correctly"
+        $NumberOfUploads++
+        Clear-Host
+        Write-Output "Number of iterations: $NumberOfIterations"
+        write-output "Files uploaded correctly  $NumberOfUploads times. Thank you Alessio!"
         # Clean up dir
         Remove-Item *.*
     } else {
-        write-output "File does not exist"
-    }
+        Clear-Host
+        Write-Output "Number of iterations: $NumberOfIterations"
+        write-output "Files uploaded correctly $NumberOfUploads times. Thank you Alessio!"
+           }
     Start-Sleep 5
 }
