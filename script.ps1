@@ -41,18 +41,18 @@ for () {
         Get-ChildItem $SourcePath -name | ForEach-Object {
             Move-Item $_ $_.replace("X", "`#")
         }
-        # Remove.dat extension
-        Get-ChildItem -File | % { Rename-Item -Path $_.PSPath -NewName $_.Name.replace(".dat",".")}
-
-        # Get target file name again
-        $SourceFileName =  Get-ChildItem $SourcePath\* | sort LastWriteTime | select -last 1 | % { $_.Name }
-	    # Since name contain a "#" we nee to encode it as an URL, since we 're going to upload to a ftp server
+        
+        # Get the target file name again
+		$SourceFileName =  Get-ChildItem $SourcePath\*.dat | sort LastWriteTime | select -last 1 | % { $_.Name }
+		$SourceFileBaseName =  Get-ChildItem $SourcePath\* | sort LastWriteTime | select -last 1 | % { $_.BaseName }
+	    
+		# Since name contain a "#" we nee to encode it as an URL, since we 're going to upload to a ftp server
         $SourceFileNameUrl = [System.Web.HttpUtility]::UrlEncode($SourceFileName)
         $ftpName = "$ftpPath/$SourceFileNameUrl"
         $SourceFile = "$SourcePath\$SourceFileName"
-
+		
         # Let 's create a dummy .flg file, we're going to upload it as well
-        Copy-Item -Path $SourceFile -Destination "$SourceFile.flg"
+        Copy-Item -Path $SourceFile -Destination "$SourceFileBaseName.flg"
 
         # Get its name
         $SourceFileNameA = Get-ChildItem $SourcePath\*.flg -Name
