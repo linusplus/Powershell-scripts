@@ -18,6 +18,7 @@ else
 }
 $NumberOfIterations = 0
 $NumberOfUploads = 0
+$open = 1
 
 for () {
         
@@ -28,6 +29,13 @@ for () {
     $NumberOfIterations++
 
     if ([System.IO.File]::Exists($SourceFile)) {
+        
+        while ($open)
+        {
+            try { [System.IO.File]::OpenWrite($SourceFile).close();$open=0 }
+            catch {$open=1}
+        }
+        
         # The target file is supposed to have an "X" in the name.To be replaced with a "#"
         Get-ChildItem $SourcePath -name | ForEach-Object {
             Move-Item $_ $_.replace("X", "`#")
@@ -59,6 +67,7 @@ for () {
         $ftp.Credentials = new-object System.Net.NetworkCredential($username, $password)
         $ftp.UseBinary = $true
         $ftp.UsePassive = $true
+                 
         # Read in the file to upload as a byte array
         $content = [System.IO.File]::ReadAllBytes($SourceFile)
         $ftp.ContentLength = $content.Length
