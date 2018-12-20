@@ -4,14 +4,28 @@ Add-Type -AssemblyName System.Web
 # Data to be modified.Please notice that script must not reside in the same directory as data, that is supposed to be empty or
 # containing one file only.
 $SourcePath = "C:\yourpath"
-$ftpPath = "ftp://yourftpserver/yourpath"
+$ftpPath = "ftp://yourftpserver/yourftpserverpath"
 $username = "username"
 $password = "password"
 
 # Do not modify
-cd $SourcePath
+if ([System.IO.Directory]::Exists($SourcePath)) {
+    cd $SourcePath
+}
+else
+{
+    write-output "Path does not exist"
+    Exit
+}
+
 
 for () {
+    if ((Get-ChildItem $SourcePath | Measure-Object | %{$_.Count}) -gt 1)  
+    {
+        write-output "The specified folder contains more than one file"
+        Exit
+    }
+        
     # Get the target file name
     $SourceFileName = Get-ChildItem $SourcePath\*.dat -Name
     # Add its path
@@ -79,8 +93,6 @@ for () {
         $ftp.UseBinary = $true
         $ftp.UsePassive = $true# read in the file to upload as a byte array
         
-        # Empty file
-        $ftp.ContentLength = 0
         try {
             $rs = $ftp.GetResponse()
         } catch {
@@ -88,10 +100,10 @@ for () {
             Exit
         }
 
-        # get the request stream, and write the bytes into it
+        # Flg file: write a single byte into it
         $rs = $ftp.GetRequestStream()
         try {
-            $rs.Write($content, 0, $content.Length)
+            $rs.WriteByte(0)
         } catch {
             write-output "FAILED: $_"
             Exit
