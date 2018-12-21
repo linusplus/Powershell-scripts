@@ -8,6 +8,8 @@ $username = "username"
 $password = "password"
 
 # Do not modify
+Clear-Host
+
 if ([System.IO.Directory]::Exists($SourcePath)) {
     cd $SourcePath
 }
@@ -51,12 +53,10 @@ for () {
         $ftpName = "$ftpPath/$SourceFileNameUrl"
         $SourceFile = "$SourcePath\$SourceFileName"
 		
-        # Let 's create a dummy .flg file, we're going to upload it as well
-        Copy-Item -Path $SourceFile -Destination "$SourceFileBaseName.flg"
+        # Create dummy .flg filename
+        $SourceFileNameA = $SourceFileBaseName + ".flg"
 
-        # Get its name
-        $SourceFileNameA = Get-ChildItem $SourcePath\*.flg -Name
-		# Encode it as an URL
+        # Encode it as an URL
         $SourceFileNameAUrl = [System.Web.HttpUtility]::UrlEncode($SourceFileNameA)
         $ftpNameA = "$ftpPath/$SourceFileNameAUrl"
         $SourceFileA = "$SourcePath\$SourceFileNameA"
