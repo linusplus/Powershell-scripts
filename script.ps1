@@ -2,6 +2,7 @@ set-executionpolicy remotesigned -Force -Scope CurrentUser
 Add-Type -AssemblyName System.Web
 
 # Data to be modified.Please notice that script must not reside in the same directory as data
+# TODO: Handle server request failures
 $SourcePath = "C:\yourpath"
 $ftpPath = "ftp://yourftpserver/yourftpserverpath"
 $username = "username"
