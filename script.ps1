@@ -16,6 +16,9 @@ $ftpPath3 = "ftp://yourftpserver/yourftpserverpath"
 $username3 = "username"
 $password3 = "password"
 
+# Sleep time in seconds between iterations
+$sleeptime = 10
+
 # Do not modify
 
 Function UploadToFTPServer ([string]$SourcePath, [string]$ftpPath, [string]$username, [string]$password)
@@ -26,7 +29,7 @@ Function UploadToFTPServer ([string]$SourcePath, [string]$ftpPath, [string]$user
 	else
 	{
 		write-output "Path does not exist"
-		Exit
+		return
 	}
 	$open = 1
 	# Get the target file name
@@ -144,5 +147,5 @@ for ()
 	Write-Output "Number of iterations: $NumberOfIterations"
 	Write-output "Files uploaded correctly  $NumberOfUploads times. Thank you Alessio!"
 	
-	sleep 10
+	sleep $sleeptime
 }
