@@ -83,7 +83,7 @@ Function UploadToFTPServer ([string]$SourcePath, [string]$ftpPath, [string]$user
 			$rs = $ftp.GetResponse()
 		} catch {
 			write-output "FAILED: $_"
-			Exit
+			return
 		}
 
 		# Get the request stream, and write the bytes into it
@@ -92,7 +92,7 @@ Function UploadToFTPServer ([string]$SourcePath, [string]$ftpPath, [string]$user
 			$rs.Write($content, 0, $content.Length)
 		} catch {
 			write-output "FAILED: $_"
-			Exit
+			return
 		}
 		# Be sure to clean up after ourselves
 		$rs.Close()
@@ -110,7 +110,7 @@ Function UploadToFTPServer ([string]$SourcePath, [string]$ftpPath, [string]$user
 			$rs = $ftp.GetResponse()
 		} catch {
 			write-output "FAILED: $_"
-			Exit
+			return
 		}
 
 		# Flg file: write a single byte into it
@@ -119,7 +119,7 @@ Function UploadToFTPServer ([string]$SourcePath, [string]$ftpPath, [string]$user
 			$rs.WriteByte(0)
 		} catch {
 			write-output "FAILED: $_"
-			Exit
+			return
 		}
 		# be sure to clean up after ourselves
 		$rs.Close()
