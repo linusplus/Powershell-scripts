@@ -1,4 +1,5 @@
 # Powershell script to automatically add a VPN connection and its certificate
+# Test
 
 try
 {
