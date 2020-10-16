@@ -1,4 +1,4 @@
-# Powershell script
+# Powershell script to automatically add a VPN connection and its certificate
 
 try
 {
