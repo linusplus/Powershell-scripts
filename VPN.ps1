@@ -1,3 +1,5 @@
+# Powershell script
+
 try
 {
 	Add-VpnConnection -Name "VPN-IKEv2" -ServerAddress linusplus.duckdns.org -TunnelType "Ikev2"
