@@ -15,6 +15,7 @@ catch
 {
 	Write-Output "Warning: VPN connection $connectionName already exists, attributes will be overwritten"
 }
+Set-VpnConnection -ConnectionName $connectionName -RememberCredential TRUE
 Set-VpnConnectionIPsecConfiguration -ConnectionName $connectionName -AuthenticationTransformConstants SHA196 -CipherTransformConstants AES256 -EncryptionMethod AES256 -IntegrityCheckMethod SHA256 -PfsGroup None -DHGroup Group14 -PassThru -Force
 try
 {
