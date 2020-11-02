@@ -9,7 +9,7 @@ $certificate = .\certificate.crt"
 try
 {
 	Add-VpnConnection -Name $connectionName -ServerAddress $server -TunnelType "Ikev2"
-	Write-Output "VPN connection added successfully"
+	Write-Output "VPN connection $connectionName added successfully"
 }
 catch
 {
