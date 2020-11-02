@@ -2,7 +2,7 @@
 
 $connectionName = "VPN-IKEv2"
 $server = "linusplus.duckdns.org"
-$certificate = .\certificate.crt"
+$certificate = ".\certificate.crt"
 
 # Do not modify below this line
 
